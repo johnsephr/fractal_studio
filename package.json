@@ -13,7 +13,8 @@
     "rc-input-number": "^8.6.1",
     "react": "^18.2.0",
     "react-color": "^2.19.3",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-jss": "^10.10.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

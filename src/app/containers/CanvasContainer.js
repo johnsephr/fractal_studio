@@ -11,6 +11,13 @@ const CanvasContainer = props => {
 
     useEffect(() => {
         const canvas = canvasRef.current;
+
+        // window.addEventListener("resize", () => {
+        //         canvas.width = document.documentElement.clientWidth;
+        //         canvas.height = document.documentElement.clientHeight;
+        //     }
+        // );
+
         if (canvas && branches && angle) {
             // init canvas as ctx
             const ctx = canvas.getContext('2d')
@@ -86,18 +93,24 @@ const CanvasContainer = props => {
         }
     }, [downloadImage])
 
+    document.body.style.margin = 0;
+    // document.documentElement.style.marginTop = 0;
+    // document.documentElement.style.marginBottom = 0;
+    // document.documentElement.style.marginLeft = 0;
+    // document.documentElement.style.marginRight = 0;
+
+
     return (
         <Fragment>
             <canvas
                 id="canvas"
                 ref={canvasRef}
-                width={window.innerWidth}
-                height={window.innerHeight - 190}
+                width={document.documentElement.clientWidth * .8}
+                height={document.documentElement.clientHeight - 400}
                 style={{
                     position: 'relative',
-                    top: 0,
-                    left: 0,
-                    background: '#120a27'
+                    margin: '0 auto',
+                    background: '#transparent'
                 }}
             />
         </Fragment>

@@ -4,7 +4,7 @@ import HomePage from './containers/HomePage';
 
 export default function Home() {
   return (
-    <main>
+    <main style={{backgroundColor: 'black'}}>
       <HomePage />
     </main>
   );
