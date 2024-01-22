@@ -6,7 +6,7 @@ import React, { Fragment, useRef, useContext, useEffect } from 'react'
 import { ControlPanelContext } from '../contexts/ControlPanelContext';
 
 const CanvasContainer = props => {
-    const { genTrigger, branches, angle, levels, strokeStyle, downloadImage, setDownloadImage } = useContext(ControlPanelContext);
+    const { genTrigger, branches, angle, levels, hue, downloadImage, setDownloadImage } = useContext(ControlPanelContext);
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -40,6 +40,8 @@ const CanvasContainer = props => {
             // push the canvas (back) to the middle of the screen
             ctx.translate(canvas.width / 2, (canvas.height / 2) - 5);
 
+            ctx.rotate(270 * Math.PI / 180);
+
             // actual angle value used in function below
             const decimalAngle = angle / 100;
 
@@ -47,8 +49,13 @@ const CanvasContainer = props => {
             function drawLine(level) {
                 if (level > maxLevel) return;
 
-                ctx.strokeStyle = strokeStyle;
+                ctx.strokeStyle = `hsl(${hue.h},${hue.s * 100}%,${hue.l * 100}%, ${hue.a})`;
                 ctx.lineWidth = 2;
+
+                ctx.beginPath();
+                ctx.arc(0, 0, 350, 0, 2 * Math.PI);
+                ctx.stroke();
+
                 ctx.beginPath();
                 ctx.moveTo(0, 0);
                 ctx.lineTo(250, 0);
@@ -77,7 +84,7 @@ const CanvasContainer = props => {
                 ctx.rotate(Math.PI * 2 / branches);
             }
         }
-    }, [genTrigger, branches, angle, levels, strokeStyle])
+    }, [genTrigger, branches, angle, levels, hue])
 
     useEffect(() => {
         const canvas = canvasRef.current;

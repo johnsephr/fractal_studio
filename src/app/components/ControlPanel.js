@@ -1,12 +1,19 @@
 "use client";
 
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
+
+import Image from "next/image";
+import Play from './Play'
+import Pause from './Pause'
+
+import ControlPanelStyles from "./ControlPanelStyles";
 
 // react-color
-import { ChromePicker } from "react-color";
+import { HuePicker } from "react-color";
 
 // contexts
 import { ControlPanelContext } from "../contexts/ControlPanelContext";
+// import { Hue } from "react-color/lib/components/common";
 
 const ControlPanel = (props) => {
   const {
@@ -18,15 +25,24 @@ const ControlPanel = (props) => {
     setAngle,
     levels,
     setLevels,
-    strokeStyle,
-    setStrokeStyle,
+    hue,
+    setHue,
     downloadImage,
     setDownloadImage,
+    playAngle,
+    setPlayAngle,
+    playBranches,
+    setPlayBranches,
+    playHue,
+    setPlayHue,
+    playLevels,
+    setPlayLevels
   } = useContext(ControlPanelContext);
 
   // update stroke style on color change
   const handleColorChange = (color, event) => {
-    setStrokeStyle(color.hex);
+    setHue(color.hsl);
+    console.log(color.hsl)
   };
 
   const handleAngleChange = (event) => {
@@ -41,125 +57,101 @@ const ControlPanel = (props) => {
     setLevels(event.target.value)
   };
 
-
-  const styles = {
-
-    // Controller Container
-    controller: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-around",
-      flexWrap: 'wrap',
-      backgroundColor: 'black'
-    },
-
-    // Color Picker
-    colorPicker: {
-      flex: 1,
-      display: 'flex',
-      justifyContent: 'center'
-    },
-
-    // Inputs
-    inputs: {
-      flex: 1,
-      width: 300,
-      margin: '5rem',
-    },
-
-    //input 
-    input: {
-      WebkitAppearance: 'none',
-      width: '100%',
-      background: '#120a27',
-      borderRadius: 10,
-      margin: '10px 0 16px 0'
-    },
-
-    //Buttons
-    buttons: {
-      flex: 1,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-around',
-      height: '100%',
-      alignItems: 'center'
-    },
-
-    //Button
-    button: {
-      padding: 10,
-      width: '80%',
-      backgroundColor: "#120a27",
-      margin: '10px 0'
-    }
-
-  };
+  const styles = ControlPanelStyles
 
   return (
-   
-      <div style={styles.controller}>
 
-        <div style={styles.colorPicker}>
-          <ChromePicker
-            color={strokeStyle}
-            onChange={handleColorChange}
-            disableAlpha
-          />
-        </div>
+    <div style={styles.controller}>
 
-        <div style={styles.inputs}>
+      <div style={styles.inputs}>
 
-   
-            <p>Angle</p>
-            <input 
-              style={styles.input}
-              type="range"
-              min="0"
-              max="100"
-              step={1}
-              onChange={handleAngleChange}
-              value={angle}
-            />
-        
-            <p>Branches</p>
-            <input 
-              style={styles.input}
-              type="range"
-              min="0"
-              max="100"
-              step={1}
-              onChange={handleBranchesChange}
-              value={branches}
-            />
-          
-            <p>Levels</p>
-            <input 
-              style={styles.input}
-              type="range"
-              min="0"
-              max="5"
-              step={1}
-              onChange={handleLevelsChange}
-              value={levels}
-            />
-     
-        </div>
-
-        <div style={styles.buttons}>
-
-        <button onClick={() => setGenTrigger(genTrigger + 1)} style={styles.button}>
-            Random Fractal
+        <div style={styles.title}>
+          <p >Angle</p>
+          <button
+            style={styles.playButton}
+            onClick={() => setPlayAngle(!playAngle)}>
+            {playAngle ? <Pause /> : <Play />}
           </button>
-        
-          <button onClick={() => setDownloadImage(!downloadImage)} style={styles.button}>
-            Download
-          </button>
-
         </div>
+        <input
+          style={styles.input}
+          type="range"
+          min="0"
+          max="100"
+          step={1}
+          onChange={handleAngleChange}
+          value={angle}
+        />
+
+        <div style={styles.title}>
+          <p >Branches</p>
+          <button
+            style={styles.playButton}
+            onClick={() => setPlayBranches(!playBranches)}>
+            {playBranches ? <Pause /> : <Play />}
+          </button>
+        </div>
+        <input
+          style={styles.input}
+          type="range"
+          min="0"
+          max="100"
+          step={1}
+          onChange={handleBranchesChange}
+          value={branches}
+        />
+
+        <div style={styles.title}>
+          <p>Levels</p>
+          <button
+            style={styles.playButton}
+            onClick={() => setPlayLevels(!playLevels)}>
+            {playLevels ? <Pause /> : <Play />}
+          </button>
+        </div>
+        <input
+          style={styles.input}
+          type="range"
+          min="0"
+          max="4"
+          step={1}
+          onChange={handleLevelsChange}
+          value={levels}
+        />
+
+
+        <div style={styles.title}>
+          <p>Hue</p>
+          <button
+            style={styles.playHue}
+            onClick={() => setPlayHue(!playHue)}>
+            {playHue ? <Pause /> : <Play />}
+          </button>
+        </div>
+        <HuePicker
+          color={hue}
+          onChange={handleColorChange}
+          width='100%'
+          style={styles.input}
+        />
 
 
       </div>
+
+      <div style={styles.buttons}>
+
+        <button onClick={() => setGenTrigger(genTrigger + 1)} style={styles.button}>
+          Random Fractal
+        </button>
+
+        <button onClick={() => setDownloadImage(!downloadImage)} style={styles.button}>
+          Download
+        </button>
+
+      </div>
+
+
+    </div>
   );
 };
 
